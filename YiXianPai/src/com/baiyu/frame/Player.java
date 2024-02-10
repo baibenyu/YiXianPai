@@ -11,6 +11,7 @@ public class Player {
     private int realm; // 境界:练气0,筑基1,金丹2,元婴3,化神4,返虚5
     private int cultivation; // 修为值
     private ArrayList<Card> cards = new ArrayList<>(); // 卡组
+    private int cardsLength;
     private int defenceValue; // 防值
     private int swordPower; // 剑意值
     private int LingQi; // 灵气值
@@ -18,16 +19,23 @@ public class Player {
     private int defenceRate = 2;
 
     // 构造函数
-    public Player(String name, int health, int cultivation) {
+    public Player(String name, int health, int cultivation, int cardsLength) {
         this.name = name;
         this.health = health;
         this.cultivation = cultivation;
+        this.cardsLength = cardsLength;
     }
 
-    public Card nextCard() {
-        Card temp = cards.get(currentCardId);
-        currentCardId = (currentCardId + 1) % cards.size();
-        return temp;
+    public int getCurrentCardId() {
+        return currentCardId;
+    }
+
+    public void setCurrentCardId(int currentCardId) {
+        this.currentCardId = currentCardId % cardsLength; // 卡组循环进行,不可能超出卡组长度
+    }
+
+    public Card getCurrentCard() {
+        return cards.get(currentCardId);
     }
 
     public int getDefenceRate() {
@@ -106,6 +114,17 @@ public class Player {
         this.swordPower = swordPower;
     }
 
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", health=" + health +
+                ", defenceValue=" + defenceValue +
+                ", swordPower=" + swordPower +
+                ", LingQi=" + LingQi +
+                ", currentCardId=" + currentCardId +
+                '}';
+    }
 
 }
 
