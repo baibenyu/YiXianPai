@@ -1,6 +1,10 @@
 package com.baiyu.frame;
 
+import com.baiyu.buff.Buff;
 import com.baiyu.card.Card;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Turn {
     public Turn() {
@@ -21,6 +25,17 @@ public class Turn {
     // 回合进行中
     public void duringTurn(Player me, Player target, Card card) {
         card.execute(me, target);
+        eliminateDeadBuffs(me,target);
+    }
+
+    private void eliminateDeadBuffs(Player me, Player target) {
+        Map<String,Buff> buffs = me.getBuffs();
+        // 如果已经死亡,消除该buff
+        for(Map.Entry<String,Buff> buffEntry: buffs.entrySet()){
+            String key = buffEntry.getKey();
+            Buff value = buffEntry.getValue();
+            if (!value.isAlive()) buffs.remove(key);
+        }
     }
 
     // 回合结束时
