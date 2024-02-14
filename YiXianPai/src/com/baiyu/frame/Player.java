@@ -56,13 +56,6 @@ public class Player {
         return cards.get(currentCardId);
     }
 
-    public int getDefenceRate() {
-        return defenceRate;
-    }
-
-    public void setDefenceRate(int defenceRate) {
-        this.defenceRate = defenceRate;
-    }
 
     public ArrayList<Card> getCards() {
         return cards;
@@ -88,14 +81,6 @@ public class Player {
         this.cultivation = cultivation;
     }
 
-    public int getDefenceValue() {
-        return defenceValue;
-    }
-
-    public void setDefenceValue(int defenceValue) {
-        this.defenceValue = defenceValue;
-    }
-
     // 获取玩家姓名
     public String getName() {
         return name;
@@ -111,25 +96,53 @@ public class Player {
         this.health = health;
     }
 
-    public void attack(Player target, int attackValue) {
-        int attackRate = 1; // 伤害比率,初始不受影响
-        // 对"攻"基础数值有影响的buff生效
+    // 我方数值buff
+    public int ourNumericalBuff(int attackValue){
         if (buffs.containsKey("剑意")){
             attackValue = ((Effectable) buffs.get("剑意")).effect(attackValue);
         }
         if (buffs.containsKey("加攻")){
             attackValue = ((Effectable) buffs.get("加攻")).effect(attackValue);
         }
-
-
+        return attackValue;
+    }
+    // 我方数值倍率buff
+    public int ourNumericalMultiplicationBuff(int attackRate){
+        return attackRate;
+    }
+    // 敌方数值buff
+    public int targetNumericalBuff(Player target,int attackValue){
         Map<String,Buff> targetBuffs = target.getBuffs();
-        // 遍历对方所有buff,并生效
+        if (targetBuffs.containsKey("防")){
+            Buff defense = targetBuffs.get("防");
+            int offsetValue = min(attackValue, defense.getValue()); // 被防抵消的攻
+            defense.decrease(offsetValue); // 扣除被攻击的防
+            attackValue -= offsetValue;// 剩余的攻
+        }
+        return attackValue;
+    }
+    // 敌方数值倍率buff
+    public int targetNumericalMultiplicationBuff(Player target,int attackRate){
+        Map<String,Buff> targetBuffs = target.getBuffs();
+        return attackRate;
+    }
 
 
+
+    public void attack(Player target, int attackValue) {
+        int attackRate = 1; // 伤害比率,初始不受影响
+
+        // 数值buff结算
+        attackValue = ourNumericalBuff(attackValue);
+        attackRate = ourNumericalMultiplicationBuff(attackRate);
+        attackValue = targetNumericalBuff(target,attackValue);
+        attackRate = targetNumericalMultiplicationBuff(target,attackRate);
+
+
+
+        // 特殊效果buff
         int damage = attackValue;
-        int offsetValue = min(damage, target.getDefenceValue()); // 被防抵消的攻
-        target.setDefenceValue(target.getDefenceValue() - offsetValue); // 扣除被攻击的防后,剩余的防
-        damage -= offsetValue;// 剩余的攻
+
         target.setHealth(target.getHealth() - damage); // 扣除生命值
     }
 

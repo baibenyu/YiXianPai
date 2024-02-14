@@ -5,32 +5,29 @@ import com.baiyu.buff.Effectable;
 
 public class JianYi extends Buff implements Effectable {
     private String name = "剑意";
-    private int jianYiValue;
+    private int value;
     private boolean alive;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public JianYi(int jianYiValue) {
-        this.jianYiValue = jianYiValue;
+        this.value = jianYiValue;
         this.alive = true;
     }
 
     @Override
     public String toString() {
         return "JianYi{" +
-                "jianYiValue=" + jianYiValue +
+                "jianYiValue=" + value +
                 '}';
     }
 
+    public String getName() {
+        return name;
+    }
     @Override
     public void setValue(int jianYiValue) {
-        this.jianYiValue = jianYiValue;
+        this.value = jianYiValue;
     }
 
     @Override
@@ -44,18 +41,18 @@ public class JianYi extends Buff implements Effectable {
     }
 
     @Override
-    public void increase(int amount) {
-        this.jianYiValue += amount;
+    public void increase(int value) {
+        this.value += value;
     }
 
     @Override
-    public void decrease(int amount) {
-        this.jianYiValue -= amount;
+    public void decrease(int value) {
+        this.value -= value;
     }
 
     @Override
     public int getValue() {
-        return this.jianYiValue;
+        return this.value;
     }
 
     @Override

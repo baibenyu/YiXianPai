@@ -2,14 +2,14 @@ package com.baiyu.buff.buffs;
 
 import com.baiyu.buff.Buff;
 
-public class LingQi extends Buff {
-    private String name = "灵气";
+public class IgnoreDenfense extends Buff {
+    private String name = "无视防御";
     private int value;
     private boolean alive;
 
-    public LingQi(int lingQiValue) {
-        this.value = lingQiValue;
-        alive = true;
+    @Override
+    public void setValue(int value) {
+        this.value = value;
     }
 
     @Override
@@ -19,7 +19,7 @@ public class LingQi extends Buff {
 
     @Override
     public void setAlive(boolean flag) {
-        alive = flag;
+        this.alive = flag;
     }
 
     @Override
@@ -29,29 +29,18 @@ public class LingQi extends Buff {
 
     @Override
     public void increase(int value) {
-        value += value;
+        this.value += value;
     }
 
     @Override
     public void decrease(int value) {
         this.value -= value;
-        if (this.value <= 0) alive = false;
     }
 
     @Override
     public int getValue() {
-        return value;
+        return this.value;
     }
 
-    @Override
-    public void setValue(int value) {
-        value = value;
-    }
 
-    @Override
-    public String toString() {
-        return "LingQi{" +
-                "lingQiValue=" + value +
-                '}';
-    }
 }
