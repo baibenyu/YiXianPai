@@ -11,36 +11,35 @@ import java.util.Map;
 import static java.lang.Math.min;
 
 public class FeiYaJian extends Card implements JiShang {
-    private int level;
-    private String name = "飞牙剑";
     private int attackValue; // 攻击值
     private int attackCount; // 攻击次数
-    private int damage; // 己方单次理论攻击力
     private int targetInitialHP; // 对方在该卡牌执行之前的生命值
     private int initialJianYi; // 我方在该卡牌执行之前的剑意值
     private final int lingQiCost = 1;
 
-    public FeiYaJian(int attackValue, int attackCount, int level) {
-        this.attackValue = attackValue;
-        this.attackCount = attackCount;
-        this.level = level;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public FeiYaJian(int level) {
+        super(level,"飞牙剑");
+        initializeAttributes();
     }
 
     @Override
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
+    public void initializeAttributes() {
+        switch (level) {
+            case 1:
+                attackValue = 8;
+                attackCount = 1;
+                break;
+            case 2:
+                attackValue = 11;
+                attackCount = 1;
+                break;
+            case 3:
+                attackValue = 14;
+                attackCount = 1;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid level: " + level);
+        }
     }
 
     @Override

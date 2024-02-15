@@ -8,33 +8,32 @@ import static java.lang.Math.min;
 public class ZhouFengJian extends Card {
     private int attackValue; // 攻击值
     private int attackCount; // 攻击次数
-    private int damage; // 己方单次理论攻击力
-    private String name = "骤风剑";
-    private int level;
 
-
-    public ZhouFengJian(int attackValue, int attackCount,int level) {
-        this.attackValue = attackValue;
-        this.attackCount = attackCount;
-        this.level = level;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public ZhouFengJian(int level) {
+        super(level,"骤风剑");
+        initializeAttributes();
     }
 
     @Override
-    public int getLevel() {
-        return level;
+    public void initializeAttributes() {
+        switch (level) {
+            case 1:
+                attackValue = 3;
+                attackCount = 2;
+                break;
+            case 2:
+                attackValue = 4;
+                attackCount = 2;
+                break;
+            case 3:
+                attackValue = 6;
+                attackCount = 2;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid level: " + level);
+        }
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
 
     @Override
     public boolean execute(Player me, Player target) {

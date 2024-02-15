@@ -1,24 +1,48 @@
 package com.baiyu.buff;
 
 public abstract class Buff {
-    public abstract boolean isAlive();
-    public abstract void setAlive(boolean flag);
+    public String name;
+    public int value; // buff的层数
+    public boolean alive; // buff是否还存活
 
-    public abstract String getName();
+    public Buff(int value) {
+        this.value = value;
+        this.alive = true;
+    }
 
-    // 增加数值
-    public abstract void increase(int value);
+    public boolean isAlive() {
+        return this.alive;
+    }
 
-    // 减少数值
-    public abstract void decrease(int value);
 
-//    // 效果
-//    public abstract void effect();
+    public void setAlive(boolean flag) {
+        this.alive = flag;
+    }
 
-    // 获取数值
-    public abstract int getValue();
 
-    // 设定数值
-    public abstract void setValue(int value);
+    public String getName() {
+        return name;
+    }
+
+
+    public void increase(int value) {
+        this.value += value;
+    }
+
+
+    public void decrease(int value) {
+        this.value -= value;
+        if (this.value <= 0) this.alive = false;
+    }
+
+
+    public int getValue() {
+        return this.value;
+    }
+
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 
 }

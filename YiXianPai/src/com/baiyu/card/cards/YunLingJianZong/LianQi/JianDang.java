@@ -12,31 +12,30 @@ import java.util.Map;
 public class JianDang extends Card {
     private int defenceValue; // 增加的防值
     private int jianYi; // 增加的剑意值
-    private String name = "剑挡";
-    private int level;
 
-    public JianDang(int defenceValue, int jianYi, int level) {
-        this.defenceValue = defenceValue;
-        this.jianYi = jianYi;
-        this.level = level;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public JianDang(int level) {
+        super(level,"剑挡");
+        initializeAttributes();
     }
 
     @Override
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
+    public void initializeAttributes() {
+        switch (level) {
+            case 1:
+                defenceValue = 4;
+                jianYi = 2;
+                break;
+            case 2:
+                defenceValue = 5;
+                jianYi = 3;
+                break;
+            case 3:
+                defenceValue = 6;
+                jianYi = 4;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid level: " + level);
+        }
     }
 
     @Override

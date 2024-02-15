@@ -11,32 +11,32 @@ import java.util.Map;
 public class HuShenLingQi extends Card {
     private int defenceValue; // 增加的防值
     private int lingQiValue; // 增加的灵气值
-    private String name = "护身灵气";
 
-    private int level;
-
-    public HuShenLingQi(int defenceValue, int lingQiValue, int level) {
-        this.defenceValue = defenceValue;
-        this.lingQiValue = lingQiValue;
-        this.level = level;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public HuShenLingQi(int level) {
+        super(level,"护身灵气");
+        initializeAttributes();
     }
 
     @Override
-    public int getLevel() {
-        return level;
+    public void initializeAttributes() {
+        switch (level) {
+            case 1:
+                defenceValue = 5;
+                lingQiValue = 1;
+                break;
+            case 2:
+                defenceValue = 5;
+                lingQiValue = 2;
+                break;
+            case 3:
+                defenceValue = 5;
+                lingQiValue = 3;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid level: " + level);
+        }
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
 
     @Override
     public boolean execute(Player me, Player target) {

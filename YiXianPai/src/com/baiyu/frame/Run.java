@@ -12,25 +12,25 @@ public class Run {
 
     public static void run() {
         // 创建"我"玩家并添加卡组
-        Player p1 = new Player("我", 43, 8,cardsLength);
+        Player p1 = new Player("我", 43, 8, cardsLength);
         ArrayList<Card> p1Cards = p1.getCards();
 
         ArrayList<Card> p1AllCards = new ArrayList<>(); // 存储所有可选的卡牌
-        p1AllCards.add(new JianPi(4, 1, 2, 1));
-        p1AllCards.add(new JianDang(4, 2, 1));
-        p1AllCards.add(new JianDang(5, 3, 2));
-        p1AllCards.add(new FeiYaJian(14, 1, 3));
-        p1AllCards.add(new ZhouFengJian(4, 2, 2));
+        p1AllCards.add(new JianPi(1));
+        p1AllCards.add(new JianDang(1));
+        p1AllCards.add(new JianDang(2));
+        p1AllCards.add(new FeiYaJian(3));
+        p1AllCards.add(new ZhouFengJian(2));
 
 
         // 创建"对手"玩家并添加卡牌
-        Player p2 = new Player("对手", 46, 9,5);
+        Player p2 = new Player("对手", 46, 9, 5);
         ArrayList<Card> p2Cards = p2.getCards();
-        p2Cards.add(new HuShenLingQi(5, 2, 2));
-        p2Cards.add(new JianDang(4, 2, 1));
-        p2Cards.add(new FeiYaJian(8, 1, 1));
-        p2Cards.add(new JianDang(4, 2, 1));
-        p2Cards.add(new FeiYaJian(8, 1, 1));
+        p2Cards.add(new HuShenLingQi(2));
+        p2Cards.add(new JianDang(1));
+        p2Cards.add(new FeiYaJian(1));
+        p2Cards.add(new JianDang(1));
+        p2Cards.add(new FeiYaJian(1));
 
         // 尝试所有卡牌组合,并尝试所有组合的所有排列
         selectFrom(0, p1AllCards, p1Cards, p1, p2);
@@ -52,7 +52,7 @@ public class Run {
 
     public static Player createNewPlayerWithCards(String name, int health, int cultivation, ArrayList<Card> inputCards) {
         // 创建新的 Player 对象
-        Player newPlayer = new Player(name, health, cultivation,cardsLength);
+        Player newPlayer = new Player(name, health, cultivation, cardsLength);
         // 将传入的卡组加入到新对象的卡组中
         newPlayer.getCards().addAll(inputCards);
         return newPlayer;
@@ -89,7 +89,7 @@ public class Run {
             while (cnt <= 64) {
                 Turn turn = new Turn();
                 // 一方先行动
-                System.out.println("回合"+cnt);
+                System.out.println("回合" + cnt);
                 if (judge(p1, p2, currentPlayer, nextPlayer, turn)) {
                     isDead = true;
                     break;
@@ -97,7 +97,7 @@ public class Run {
                 cnt++;
 
                 // 一方后行动
-                System.out.println("回合"+cnt);
+                System.out.println("回合" + cnt);
                 if (judge(p1, p2, nextPlayer, currentPlayer, turn)) {
                     isDead = true;
                     break;
@@ -106,7 +106,7 @@ public class Run {
             }
             // 超出64回合都没决出胜负,那么生命值多的那一方获胜
             if (!isDead) {
-                if(p1.getHealth() > p2.getHealth()) System.out.println("\033[32m你赢了\033[0m");
+                if (p1.getHealth() > p2.getHealth()) System.out.println("\033[32m你赢了\033[0m");
                 else System.out.println("\033[31m你输了!\033[0m");
             }
         }
