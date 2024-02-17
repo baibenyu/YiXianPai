@@ -4,10 +4,10 @@ import com.baiyu.card.Card;
 import com.baiyu.frame.Player;
 
 
-public class YJTanYun extends Card {
+public class YunJianTanYun extends Card {
     private int attackValue; // 攻击值
 
-    public YJTanYun(int level) {
+    public YunJianTanYun(int level) {
         super(level, "云剑·探云");
         initializeAttributes(level);
     }

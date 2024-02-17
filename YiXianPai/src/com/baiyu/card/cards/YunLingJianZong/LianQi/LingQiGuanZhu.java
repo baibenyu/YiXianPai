@@ -12,11 +12,11 @@ public class LingQiGuanZhu extends Card {
 
     public LingQiGuanZhu(int level) {
         super(level, "灵气灌注");
-        initializeAttributes();
+        initializeAttributes(level);
     }
 
     @Override
-    public void initializeAttributes() {
+    public void initializeAttributes(int level) {
         switch (level) {
             case 1:
                 lingQiValue = 2;
@@ -34,11 +34,10 @@ public class LingQiGuanZhu extends Card {
 
     @Override
     public boolean execute(Player me, Player target) {
-        Map<String, Buff> buffs = me.getBuffs();
         // 增加灵气
-        addBuff(buffs, "灵气", lingQiValue);
+        me.addBuff( "灵气", lingQiValue);
         // 增加无视防御
-        addBuff(buffs, "无视防御", 1);
+        me.addBuff( "无视防御", 1);
 
         return true;
     }

@@ -4,11 +4,11 @@ import com.baiyu.card.Card;
 import com.baiyu.entry.LianYun;
 import com.baiyu.frame.Player;
 
-public class YJHuiShou extends Card implements LianYun {
+public class YunJianHuiShou extends Card implements LianYun {
     private int defenseValue; // 追加的防御值
     private int lifeRegainValue; // 连云后恢复的生命值
 
-    public YJHuiShou(int level) {
+    public YunJianHuiShou(int level) {
         super(level, "云剑·回守");
         initializeAttributes(level);
     }
@@ -37,9 +37,9 @@ public class YJHuiShou extends Card implements LianYun {
 
     @Override
     public boolean execute(Player me, Player target) {
-        addBuff(me.getBuffs(), "防", defenseValue);
+        me.addBuff("防", defenseValue);
         Card card = me.getPreviousUsedCard();
-        if (card != null && card.getName().contains("云剑")) lianYun(me,target);
+        if (card != null && card.getName().contains("云剑")) lianYun(me, target);
         return true;
     }
 

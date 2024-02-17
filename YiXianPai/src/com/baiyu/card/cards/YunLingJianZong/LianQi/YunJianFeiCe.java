@@ -4,12 +4,12 @@ import com.baiyu.card.Card;
 import com.baiyu.entry.LianYun;
 import com.baiyu.frame.Player;
 
-public class YJFeiCe extends Card implements LianYun {
+public class YunJianFeiCe extends Card implements LianYun {
     private int attackValue; // 攻击值
     private int plusAttackValue; // 连云后追加的攻击值
 
 
-    public YJFeiCe(int level) {
+    public YunJianFeiCe(int level) {
         super(level, "云剑·飞刺");
         initializeAttributes(level);
     }

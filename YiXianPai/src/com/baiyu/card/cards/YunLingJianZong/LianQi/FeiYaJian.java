@@ -17,11 +17,11 @@ public class FeiYaJian extends Card implements JiShang {
 
     public FeiYaJian(int level) {
         super(level,"飞牙剑");
-        initializeAttributes();
+        initializeAttributes(level);
     }
 
     @Override
-    public void initializeAttributes() {
+    public void initializeAttributes(int level) {
         lingQiCost = 1;
         switch (level) {
             case 1:
@@ -41,21 +41,14 @@ public class FeiYaJian extends Card implements JiShang {
     @Override
     public boolean execute(Player me, Player target) {
         Map<String, Buff> buffs = me.getBuffs();
-        // 灵气是否充足
-        if (buffs.containsKey("灵气")){
-            LingQi lingQi = (LingQi) buffs.get("灵气");
-            if (lingQi.getValue() >= lingQiCost){
-                lingQi.decrease(lingQiCost);
-                // 保存玩家的状态
-                targetInitialHP = target.getHealth();
-
-                me.attack(target, attackValue);
-                if (target.getHealth() < targetInitialHP) JiShang(me, target); // 击伤效果是否触发
-                return true;
-            } else lingQi.increase(1); // 灵气不足,执行失败,此回合仅+1点灵气
-        } else buffs.put("灵气",new LingQi(1)); // 灵气不足,执行失败,此回合仅+1点灵气
+        if (isLingQiEnough(buffs,lingQiCost)) {
+            // 保存玩家的状态
+            targetInitialHP = target.getHealth();
+            me.attack(target, attackValue);
+            if (target.getHealth() < targetInitialHP) JiShang(me, target); // 击伤效果是否触发
+            return true;
+        }
         return false;
-
     }
 
     @Override

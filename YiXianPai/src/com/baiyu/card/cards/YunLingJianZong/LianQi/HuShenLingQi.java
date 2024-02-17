@@ -14,11 +14,11 @@ public class HuShenLingQi extends Card {
 
     public HuShenLingQi(int level) {
         super(level,"护身灵气");
-        initializeAttributes();
+        initializeAttributes(level);
     }
 
     @Override
-    public void initializeAttributes() {
+    public void initializeAttributes(int level) {
         switch (level) {
             case 1:
                 defenceValue = 5;
@@ -40,11 +40,10 @@ public class HuShenLingQi extends Card {
 
     @Override
     public boolean execute(Player me, Player target) {
-        Map<String, Buff> buffs = me.getBuffs();
         // 增加防值
-        addBuff(buffs,"防",defenceValue);
+        me.addBuff("防",defenceValue);
         // 增加人物灵气值
-        addBuff(buffs,"灵气",lingQiValue);
+        me.addBuff("灵气",lingQiValue);
 
         return true;
     }

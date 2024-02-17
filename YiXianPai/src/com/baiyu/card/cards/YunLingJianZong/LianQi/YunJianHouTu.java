@@ -1,18 +1,15 @@
 package com.baiyu.card.cards.YunLingJianZong.LianQi;
 
-import com.baiyu.buff.Buff;
 import com.baiyu.card.Card;
 import com.baiyu.entry.LianYun;
 import com.baiyu.frame.Player;
 
-import java.util.Map;
-
-public class YJHouTu extends Card implements LianYun {
+public class YunJianHouTu extends Card implements LianYun {
     private int attackValue; // 攻击值
     private int plusDefenseValue; // 连云后追加的防值
 
 
-    public YJHouTu(int level) {
+    public YunJianHouTu(int level) {
         super(level, "云剑·厚土");
         initializeAttributes(level);
     }
@@ -47,6 +44,6 @@ public class YJHouTu extends Card implements LianYun {
 
     @Override
     public void lianYun(Player me, Player target) {
-        addBuff(me.getBuffs(),"防",plusDefenseValue);
+        me.addBuff("防",plusDefenseValue);
     }
 }

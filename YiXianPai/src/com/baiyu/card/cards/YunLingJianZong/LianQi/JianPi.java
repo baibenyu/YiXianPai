@@ -16,11 +16,11 @@ public class JianPi extends Card {
 
     public JianPi(int level) {
         super(level,"剑劈");
-        initializeAttributes();
+        initializeAttributes(level);
     }
 
     @Override
-    public void initializeAttributes() {
+    public void initializeAttributes(int level) {
         switch (level) {
             case 1:
                 attackValue = 4;
@@ -42,11 +42,9 @@ public class JianPi extends Card {
 
     @Override
     public boolean execute(Player me, Player target) {
-
         me.attack(target, attackValue);
         // 增加人物剑意值
-        Map<String, Buff> buffs = me.getBuffs();
-        addBuff(buffs,"剑意",jianYi);
+        me.addBuff("剑意",jianYi);
         return true;
     }
 
