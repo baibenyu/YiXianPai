@@ -42,13 +42,10 @@ public class HuShenLingQi extends Card {
     public boolean execute(Player me, Player target) {
         Map<String, Buff> buffs = me.getBuffs();
         // 增加防值
-        if (buffs.containsKey("防")) buffs.get("防").increase(defenceValue);
-        else buffs.put("防", new Defense(defenceValue));
+        addBuff(buffs,"防",defenceValue);
         // 增加人物灵气值
-        if (buffs.containsKey("灵气")) buffs.get("灵气").increase(lingQiValue);
-        else buffs.put("灵气", new LingQi(lingQiValue));
+        addBuff(buffs,"灵气",lingQiValue);
 
-        me.nextCard(); // 执行成功,牌序+1
         return true;
     }
 }

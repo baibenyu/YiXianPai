@@ -5,8 +5,9 @@ public abstract class Buff {
     public int value; // buff的层数
     public boolean alive; // buff是否还存活
 
-    public Buff(int value) {
+    public Buff(int value,String name) {
         this.value = value;
+        this.name = name;
         this.alive = true;
     }
 

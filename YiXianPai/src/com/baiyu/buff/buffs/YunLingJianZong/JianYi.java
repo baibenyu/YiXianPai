@@ -4,16 +4,16 @@ import com.baiyu.buff.Buff;
 import com.baiyu.buff.Effectable;
 
 public class JianYi extends Buff implements Effectable {
-    private String name = "剑意";
+    private String name ;
 
     public JianYi(int value) {
-        super(value);
+        super(value,"剑意");
     }
 
     @Override
     public String toString() {
         return "JianYi{" +
-                "jianYiValue=" + value +
+                "value=" + value +
                 '}';
     }
 

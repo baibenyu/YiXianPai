@@ -17,7 +17,7 @@ public class Player {
     private int realm; // 境界:练气0,筑基1,金丹2,元婴3,化神4,返虚5
     private int cultivation; // 修为值
     private ArrayList<Card> cards = new ArrayList<>(); // 卡组
-    private Map<String,Buff> buffs = new HashMap<>(); // 游戏过程中产生的各种增益,减益的buff
+    private Map<String, Buff> buffs = new HashMap<>(); // 游戏过程中产生的各种增益,减益的buff
     private int cardsLength;
     private int defenceValue; // 防值
     private int currentCardId; // 当前遍历到卡组中的第几张牌
@@ -32,11 +32,11 @@ public class Player {
     }
 
 
-    public Map<String,Buff> getBuffs() {
+    public Map<String, Buff> getBuffs() {
         return buffs;
     }
 
-    public void setBuffs(Map<String,Buff> buffs) {
+    public void setBuffs(Map<String, Buff> buffs) {
         this.buffs = buffs;
     }
 
@@ -97,36 +97,44 @@ public class Player {
     }
 
     // 我方数值buff
-    public int ourNumericalBuff(int attackValue){
-        if (buffs.containsKey("剑意")){
+    public int ourNumericalBuff(int attackValue) {
+        if (buffs.containsKey("剑意")) {
             attackValue = ((Effectable) buffs.get("剑意")).effect(attackValue);
         }
-        if (buffs.containsKey("加攻")){
+        if (buffs.containsKey("加攻")) {
             attackValue = ((Effectable) buffs.get("加攻")).effect(attackValue);
         }
         return attackValue;
     }
+
     // 我方数值倍率buff
-    public int ourNumericalMultiplicationBuff(int attackRate){
-        return attackRate;
-    }
-    // 敌方数值buff
-    public int targetNumericalBuff(Player target,int attackValue){
-        Map<String,Buff> targetBuffs = target.getBuffs();
-        if (targetBuffs.containsKey("防")){
-            Buff defense = targetBuffs.get("防");
-            int offsetValue = min(attackValue, defense.getValue()); // 被防抵消的攻
-            defense.decrease(offsetValue); // 扣除被攻击的防
-            attackValue -= offsetValue;// 剩余的攻
-        }
-        return attackValue;
-    }
-    // 敌方数值倍率buff
-    public int targetNumericalMultiplicationBuff(Player target,int attackRate){
-        Map<String,Buff> targetBuffs = target.getBuffs();
+    public int ourNumericalMultiplicationBuff(int attackRate) {
         return attackRate;
     }
 
+    // 敌方数值buff
+    public int targetNumericalBuff(Player target, int attackValue) {
+        Map<String, Buff> targetBuffs = target.getBuffs();
+
+        // 无视防御会跳过防御值的结算
+        if (buffs.containsKey("无视防御") && buffs.get("无视防御").isAlive()) {
+            buffs.get("无视防御").decrease(1);
+        } else {
+            if (targetBuffs.containsKey("防") && targetBuffs.get("防").isAlive()) {
+                Buff defense = targetBuffs.get("防");
+                int offsetValue = min(attackValue, defense.getValue()); // 被防抵消的攻
+                defense.decrease(offsetValue); // 扣除被攻击的防
+                attackValue -= offsetValue;// 剩余的攻
+            }
+        }
+        return attackValue;
+    }
+
+    // 敌方数值倍率buff
+    public int targetNumericalMultiplicationBuff(Player target, int attackRate) {
+        Map<String, Buff> targetBuffs = target.getBuffs();
+        return attackRate;
+    }
 
 
     public void attack(Player target, int attackValue) {
@@ -135,9 +143,8 @@ public class Player {
         // 数值buff结算
         attackValue = ourNumericalBuff(attackValue);
         attackRate = ourNumericalMultiplicationBuff(attackRate);
-        attackValue = targetNumericalBuff(target,attackValue);
-        attackRate = targetNumericalMultiplicationBuff(target,attackRate);
-
+        attackValue = targetNumericalBuff(target, attackValue);
+        attackRate = targetNumericalMultiplicationBuff(target, attackRate);
 
 
         // 特殊效果buff

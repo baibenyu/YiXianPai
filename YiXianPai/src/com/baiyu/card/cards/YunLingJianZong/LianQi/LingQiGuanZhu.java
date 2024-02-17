@@ -1,46 +1,45 @@
 package com.baiyu.card.cards.YunLingJianZong.LianQi;
 
+import com.baiyu.buff.Buff;
+import com.baiyu.buff.buffs.LingQi;
 import com.baiyu.card.Card;
 import com.baiyu.frame.Player;
 
-import static java.lang.Math.min;
+import java.util.Map;
 
-public class ZhouFengJian extends Card {
-    private int attackValue; // 攻击值
-    private int attackCount; // 攻击次数
+public class LingQiGuanZhu extends Card {
+    private int lingQiValue;
 
-    public ZhouFengJian(int level) {
-        super(level,"骤风剑");
+    public LingQiGuanZhu(int level) {
+        super(level, "灵气灌注");
         initializeAttributes();
     }
 
     @Override
     public void initializeAttributes() {
-        attackCount = 2;
         switch (level) {
             case 1:
-                attackValue = 3;
+                lingQiValue = 2;
                 break;
             case 2:
-                attackValue = 4;
+                lingQiValue = 3;
                 break;
             case 3:
-                attackValue = 6;
+                lingQiValue = 4;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid level: " + level);
         }
     }
 
-
     @Override
     public boolean execute(Player me, Player target) {
-        // 攻击attackCount次
-        for (int i = 0; i < attackCount; i++) {
-            // 根据对方状态决定实际扣除的生命值
-            me.attack(target,attackValue);
-        }
+        Map<String, Buff> buffs = me.getBuffs();
+        // 增加灵气
+        addBuff(buffs, "灵气", lingQiValue);
+        // 增加无视防御
+        addBuff(buffs, "无视防御", 1);
+
         return true;
     }
-
 }

@@ -42,13 +42,9 @@ public class JianDang extends Card {
     public boolean execute(Player me, Player target) {
         Map<String, Buff> buffs = me.getBuffs();
         // 增加防值
-        if (buffs.containsKey("防")) buffs.get("防").increase(defenceValue);
-        else buffs.put("防", new Defense(defenceValue));
+        addBuff(buffs,"防",defenceValue);
         // 增加人物剑意值
-        if (buffs.containsKey("剑意")) buffs.get("剑意").increase(jianYi);
-        else buffs.put("剑意", new JianYi(jianYi));
-        // 增加牌序
-        me.nextCard(); // 执行成功,牌序+1
+        addBuff(buffs,"剑意",jianYi);
         return true;
     }
 }

@@ -8,29 +8,28 @@ import com.baiyu.frame.Turn;
 import java.util.ArrayList;
 
 public class Run {
-    private static final int cardsLength = 5; // "我"可用的卡组长度
+    private static int cardsLength; // "我"可用的卡组长度
 
     public static void run() {
         // 创建"我"玩家并添加卡组
-        Player p1 = new Player("我", 43, 8, cardsLength);
+        cardsLength = 3;
+        Player p1 = new Player("我", 40, 2, cardsLength);
         ArrayList<Card> p1Cards = p1.getCards();
 
         ArrayList<Card> p1AllCards = new ArrayList<>(); // 存储所有可选的卡牌
-        p1AllCards.add(new JianPi(1));
-        p1AllCards.add(new JianDang(1));
-        p1AllCards.add(new JianDang(2));
-        p1AllCards.add(new FeiYaJian(3));
-        p1AllCards.add(new ZhouFengJian(2));
+        p1AllCards.add(new LingQiGuanZhu(1));
+        p1AllCards.add(new ZhenLeiJian(1));
+        p1AllCards.add(new ZhenLeiJian(2));
+
 
 
         // 创建"对手"玩家并添加卡牌
-        Player p2 = new Player("对手", 46, 9, 5);
+        Player p2 = new Player("对手", 40, 1, 3);
         ArrayList<Card> p2Cards = p2.getCards();
-        p2Cards.add(new HuShenLingQi(2));
-        p2Cards.add(new JianDang(1));
-        p2Cards.add(new FeiYaJian(1));
-        p2Cards.add(new JianDang(1));
-        p2Cards.add(new FeiYaJian(1));
+        p2Cards.add(new LingQiGuanZhu(1));
+        p2Cards.add(new JuHuLingJian(2));
+        p2Cards.add(new JuHuLingJian(1));
+
 
         // 尝试所有卡牌组合,并尝试所有组合的所有排列
         selectFrom(0, p1AllCards, p1Cards, p1, p2);
