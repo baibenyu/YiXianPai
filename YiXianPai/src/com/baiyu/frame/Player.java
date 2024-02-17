@@ -2,26 +2,44 @@ package com.baiyu.frame;
 
 import com.baiyu.buff.Buff;
 import com.baiyu.buff.Effectable;
+import com.baiyu.buff.buffs.Defense;
+import com.baiyu.buff.buffs.IgnoreDefense;
+import com.baiyu.buff.buffs.LingQi;
+import com.baiyu.buff.buffs.YunLingJianZong.JianYi;
 import com.baiyu.card.Card;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 // 玩家类
 public class Player {
     private String name; // 玩家姓名
     private int health; // 生命值
+    private int maximumHealth; // 生命值上限
     private int realm; // 境界:练气0,筑基1,金丹2,元婴3,化神4,返虚5
     private int cultivation; // 修为值
     private ArrayList<Card> cards = new ArrayList<>(); // 卡组
     private Map<String, Buff> buffs = new HashMap<>(); // 游戏过程中产生的各种增益,减益的buff
-    private int cardsLength;
-    private int defenceValue; // 防值
-    private int currentCardId; // 当前遍历到卡组中的第几张牌
-    private int defenceRate = 2;
+    private int cardsLength;// 卡组长度
+    private int currentCardId; // 当前遍历的卡牌id
+    private int previousUsedCardId; // 上一张使用过的卡牌id
+    private int kuangJianCount; // 狂剑使用的次数
+
+    private int step; // 卡牌遍历的步频和方向
+    private int defenceRate;
+
+    public int getPreviousUsedCardId() {
+        return previousUsedCardId;
+    }
+
+    public void setPreviousUsedCardId(int previousUsedCardId) {
+        this.previousUsedCardId = previousUsedCardId;
+    }
+
 
     // 构造函数
     public Player(String name, int health, int cultivation, int cardsLength) {
@@ -29,8 +47,24 @@ public class Player {
         this.health = health;
         this.cultivation = cultivation;
         this.cardsLength = cardsLength;
+        this.step = 1;
     }
 
+    public int getKuangJianCount() {
+        return kuangJianCount;
+    }
+
+    public void setKuangJianCount(int kuangJianCount) {
+        this.kuangJianCount = kuangJianCount;
+    }
+
+    public int getMaximumHealth() {
+        return maximumHealth;
+    }
+
+    public void setMaximumHealth(int maximumHealth) {
+        this.maximumHealth = maximumHealth;
+    }
 
     public Map<String, Buff> getBuffs() {
         return buffs;
@@ -50,6 +84,10 @@ public class Player {
 
     public void nextCard() {
         setCurrentCardId((getCurrentCardId() + 1) % cardsLength); // 卡组循环进行,不可能超出卡组长度
+    }
+
+    public void previousCard() {
+        setCurrentCardId((getCurrentCardId() + cardsLength - 1) % cardsLength);
     }
 
     public Card getCurrentCard() {
@@ -95,6 +133,16 @@ public class Player {
     public void setHealth(int health) {
         this.health = health;
     }
+
+    public void increaseHealth(int value) {
+        this.health += value;
+        if (this.health > maximumHealth) setHealth(maximumHealth);
+    }
+
+    public void decreaseHealth(int value) {
+        this.health -= value;
+    }
+
 
     // 我方数值buff
     public int ourNumericalBuff(int attackValue) {
@@ -150,7 +198,38 @@ public class Player {
         // 特殊效果buff
         int damage = attackValue;
 
-        target.setHealth(target.getHealth() - damage); // 扣除生命值
+        target.decreaseHealth(damage); // 扣除生命值
+    }
+
+    public void addBuff(String buffName, int value) {
+        if (buffs.containsKey(buffName)) {
+            Buff buff = buffs.get(buffName);
+            if (!buff.isAlive()) {
+                buff.setAlive(true);
+                buff.setValue(value);
+            } else buff.increase(value);
+        } else {
+            Buff buff = null;
+            switch (buffName) {
+                case "灵气":
+                    buff = new LingQi(value);
+                    break;
+                case "剑意":
+                    buff = new JianYi(value);
+                    break;
+                case "无视防御":
+                    buff = new IgnoreDefense(value);
+                    break;
+                case "防":
+                    buff = new Defense(value);
+                    break;
+                default:
+                    // 默认情况，当输入不匹配任何选项时执行
+                    System.out.println("输入无效,无该buff");
+                    break;
+            }
+            buffs.put(buffName, buff);
+        }
     }
 
     @Override
@@ -161,6 +240,10 @@ public class Player {
                 ", buffs=" + buffs +
                 ", currentCardId=" + currentCardId +
                 '}';
+    }
+
+    public Card getPreviousUsedCard() {
+        return cards.get(previousUsedCardId);
     }
 }
 

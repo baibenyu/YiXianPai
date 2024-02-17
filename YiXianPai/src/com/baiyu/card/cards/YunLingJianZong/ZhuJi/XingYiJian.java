@@ -1,4 +1,4 @@
-package com.baiyu.card.cards.YunLingJianZong.LianQi;
+package com.baiyu.card.cards.YunLingJianZong.ZhuJi;
 
 import com.baiyu.buff.Buff;
 import com.baiyu.buff.buffs.LingQi;
@@ -8,13 +8,14 @@ import com.baiyu.frame.Player;
 
 import java.util.Map;
 
-public class ZhenLeiJian extends Card implements JiShang {
+public class XingYiJian extends Card implements JiShang {
     private int attackValue; // 攻击值
-    private int plusAttackValue; // 击伤后追加的攻击值
+    private int jianYiValue;
     private int targetInitialHP; // 对方在该卡牌执行之前的生命值
     private int lingQiCost;
-    public ZhenLeiJian(int level) {
-        super(level, "震雷剑");
+
+    public XingYiJian(int level) {
+        super(level, "形意剑");
         initializeAttributes(level);
     }
 
@@ -23,16 +24,16 @@ public class ZhenLeiJian extends Card implements JiShang {
         lingQiCost = 1;
         switch (level) {
             case 1:
-                attackValue = 5;
-                plusAttackValue = 6;
+                attackValue = 8;
+                jianYiValue = 3;
                 break;
             case 2:
-                attackValue = 6;
-                plusAttackValue = 8;
+                attackValue = 11;
+                jianYiValue = 4;
                 break;
             case 3:
-                attackValue = 7;
-                plusAttackValue = 10;
+                attackValue = 14;
+                jianYiValue = 5;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid level: " + level);
@@ -42,7 +43,8 @@ public class ZhenLeiJian extends Card implements JiShang {
     @Override
     public boolean execute(Player me, Player target) {
         Map<String, Buff> buffs = me.getBuffs();
-        if (isLingQiEnough(buffs,lingQiCost)){
+        // 灵气是否充足
+        if (isLingQiEnough(buffs, lingQiCost)) {
             // 保存玩家的状态
             targetInitialHP = target.getHealth();
             me.attack(target, attackValue);
@@ -52,9 +54,8 @@ public class ZhenLeiJian extends Card implements JiShang {
         return false;
     }
 
-
     @Override
     public void JiShang(Player me, Player target) {
-        me.attack(target,plusAttackValue);
+        me.addBuff("剑意", jianYiValue);
     }
 }

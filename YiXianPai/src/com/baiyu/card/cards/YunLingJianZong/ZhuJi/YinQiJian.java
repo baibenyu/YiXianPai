@@ -1,4 +1,4 @@
-package com.baiyu.card.cards.YunLingJianZong.LianQi;
+package com.baiyu.card.cards.YunLingJianZong.ZhuJi;
 
 import com.baiyu.buff.Buff;
 import com.baiyu.buff.buffs.LingQi;
@@ -7,27 +7,25 @@ import com.baiyu.frame.Player;
 
 import java.util.Map;
 
-public class JuHuLingJian extends Card {
-    private int attackValue; // 攻击值
-    private int lingQiCost;
+public class YinQiJian extends Card {
+    private int lingQiValue;
 
-    public JuHuLingJian(int level) {
-        super(level, "巨虎灵剑");
+    public YinQiJian(int level) {
+        super(level, "引气剑");
         initializeAttributes(level);
     }
 
     @Override
     public void initializeAttributes(int level) {
-        lingQiCost = 1;
         switch (level) {
             case 1:
-                attackValue = 10;
+                lingQiValue = 2;
                 break;
             case 2:
-                attackValue = 13;
+                lingQiValue = 3;
                 break;
             case 3:
-                attackValue = 16;
+                lingQiValue = 4;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid level: " + level);
@@ -37,10 +35,14 @@ public class JuHuLingJian extends Card {
     @Override
     public boolean execute(Player me, Player target) {
         Map<String, Buff> buffs = me.getBuffs();
-        if (isLingQiEnough(buffs,lingQiCost)) {
-            me.attack(target, attackValue);
-            return true;
+        me.addBuff("灵气", lingQiValue);
+        if (buffs.get("灵气").getValue() > lingQiValue) {
+            for (int i = 0; i < 2; i++) {
+                me.attack(target, 2);
+            }
         }
-        return false;
+        return true;
     }
+
+
 }

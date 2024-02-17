@@ -11,11 +11,11 @@ public class ZhouFengJian extends Card {
 
     public ZhouFengJian(int level) {
         super(level,"骤风剑");
-        initializeAttributes();
+        initializeAttributes(level);
     }
 
     @Override
-    public void initializeAttributes() {
+    public void initializeAttributes(int level) {
         attackCount = 2;
         switch (level) {
             case 1:

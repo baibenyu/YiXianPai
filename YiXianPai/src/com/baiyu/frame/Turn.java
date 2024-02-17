@@ -30,7 +30,11 @@ public class Turn {
 
     // 回合进行中
     public void duringTurn(Player me, Player target, Card card) {
-        if(card.execute(me, target)) me.nextCard(); // 执行成功,牌序+1
+        if(card.execute(me, target)) {
+            // 执行成功,存储成功执行的卡牌id,并使得牌序+1
+            me.setPreviousUsedCardId(me.getCurrentCardId());
+            me.nextCard();
+        }
         eliminateDeadBuffs(me,target);
     }
 
@@ -61,7 +65,6 @@ public class Turn {
 
     // 回合结束时
     public void afterTurn(Player me, Player target) {
-
         eliminateDeadBuffs(me,target);
     }
 }
