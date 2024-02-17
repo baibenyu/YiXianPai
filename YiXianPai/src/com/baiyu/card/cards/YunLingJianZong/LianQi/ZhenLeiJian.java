@@ -8,15 +8,13 @@ import com.baiyu.frame.Player;
 
 import java.util.Map;
 
-import static java.lang.Math.min;
-
-public class FeiYaJian extends Card implements JiShang {
+public class ZhenLeiJian extends Card implements JiShang {
     private int attackValue; // 攻击值
+    private int plusAttackValue; // 击伤后追加的攻击值
     private int targetInitialHP; // 对方在该卡牌执行之前的生命值
     private int lingQiCost;
-
-    public FeiYaJian(int level) {
-        super(level,"飞牙剑");
+    public ZhenLeiJian(int level) {
+        super(level, "震雷剑");
         initializeAttributes();
     }
 
@@ -25,13 +23,16 @@ public class FeiYaJian extends Card implements JiShang {
         lingQiCost = 1;
         switch (level) {
             case 1:
-                attackValue = 8;
+                attackValue = 5;
+                plusAttackValue = 6;
                 break;
             case 2:
-                attackValue = 11;
+                attackValue = 6;
+                plusAttackValue = 8;
                 break;
             case 3:
-                attackValue = 14;
+                attackValue = 7;
+                plusAttackValue = 10;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid level: " + level);
@@ -55,12 +56,11 @@ public class FeiYaJian extends Card implements JiShang {
             } else lingQi.increase(1); // 灵气不足,执行失败,此回合仅+1点灵气
         } else buffs.put("灵气",new LingQi(1)); // 灵气不足,执行失败,此回合仅+1点灵气
         return false;
-
     }
+
 
     @Override
     public void JiShang(Player me, Player target) {
-        Map<String, Buff> buffs = me.getBuffs();
-        if (buffs.containsKey("剑意")) buffs.get("剑意").setAlive(true); // 返还所有剑意值
+        me.attack(target,plusAttackValue);
     }
 }

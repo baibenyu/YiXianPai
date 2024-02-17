@@ -2,16 +2,16 @@ package com.baiyu.buff.buffs;
 
 import com.baiyu.buff.Buff;
 
-public class LingQi extends Buff {
+public class IgnoreDefense extends Buff {
     private String name;
 
-    public LingQi(int value) {
-        super(value,"灵气");
+    public IgnoreDefense(int value){
+        super(value,"无视防御");
     }
 
     @Override
     public String toString() {
-        return "LingQi{" +
+        return "IgnoreDefense{" +
                 "value=" + value +
                 '}';
     }

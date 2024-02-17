@@ -20,16 +20,17 @@ public class Turn {
 
     // 回合开始前
     public void beforeTurn(Player me, Player target) {
-        // 默认情况下,防值会在回合开始时减半
+        // 默认情况下,防值会在回合开始时减半(根绝卡牌效果减少的值不同)
         if (me.getBuffs().containsKey("防")){
             Defense defense = (Defense) me.getBuffs().get("防");
-            defense.setValue(defense.getValue()/defense.getConsumptionRate());
+            defense.decrease(defense.getValue()-defense.getValue()/defense.getConsumptionRate());
         }
+        eliminateDeadBuffs(me,target);
     }
 
     // 回合进行中
     public void duringTurn(Player me, Player target, Card card) {
-        card.execute(me, target);
+        if(card.execute(me, target)) me.nextCard(); // 执行成功,牌序+1
         eliminateDeadBuffs(me,target);
     }
 
@@ -61,5 +62,6 @@ public class Turn {
     // 回合结束时
     public void afterTurn(Player me, Player target) {
 
+        eliminateDeadBuffs(me,target);
     }
 }
